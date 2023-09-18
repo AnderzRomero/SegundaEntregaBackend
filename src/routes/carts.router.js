@@ -38,6 +38,7 @@ router.post("/", async (req, res) => {
 
 router.post("/:cid/products/:pid", async (req, res) => {
   const { cid, pid } = req.params;
+  // const cantidad  = parseInt(req.params);
 
   // Vamos a ver si existen y traer sus entidades
   const product = await productService.getProductBy({ _id: pid });
@@ -47,7 +48,7 @@ router.post("/:cid/products/:pid", async (req, res) => {
 
   cart.products.push({
     _id: pid,
-    quantity: 5
+    quantity: 10
   })
   await cartModel.updateOne({_id:cid},{$set:{products:cart.products}});
   res.send({ status: "success", message: "Producto agregado al carro" });

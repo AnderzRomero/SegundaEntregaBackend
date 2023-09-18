@@ -8,11 +8,7 @@ export default class cartManager {
   getCartById = async (cartId) => {
     try {
       const cart = await cartModel.findById(cartId)
-      // .populate({
-      //     path: "products.id_product",
-      //     model: "products"
-      // });
-
+      
       if (!cart) throw new Error(`No se encontró el carrito con ID ${cartId}`);
 
 
