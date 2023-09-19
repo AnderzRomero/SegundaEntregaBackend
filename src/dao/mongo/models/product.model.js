@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const collection = "products";
 
@@ -13,10 +14,10 @@ const schema = new mongoose.Schema(
             required: true,
         },
         category: {
-            type: Array,
-            default: [],
-            required:true,   
-            index: true         
+            type: String,
+            enum: ['Accesorios Externos', 'Cajas', 'Combos Cajas con Fuentes', 'Combos Perifericos', 'Diademas', 'Mouse', 'Micro SD', 'Memorias RAM', 'Fuentes', 'Monitores', 'Pad Mouse', 'Portatiles Gamer', 'Parlantes', 'Placas Madre', 'Redes', 'Refigeraciones', 'Reguladores y Ups', 'Teclados', 'Tarjetas Graficas', 'Streaming', 'Sillas', 'Unidades Disco Mecanico', 'Unidades SSD'],
+            required: true,
+            index: true
         },
         code: {
             type: String,
@@ -45,6 +46,8 @@ const schema = new mongoose.Schema(
     },
     { timestamps: true }
 );
+
+schema.plugin(mongoosePaginate);
 
 const productModel = mongoose.model(collection, schema);
 

@@ -8,7 +8,7 @@ export default class cartManager {
   getCartById = async (cartId) => {
     try {
       const cart = await cartModel.findById(cartId)
-      
+
       if (!cart) throw new Error(`No se encontró el carrito con ID ${cartId}`);
 
 
@@ -17,6 +17,7 @@ export default class cartManager {
       throw error;
     }
   }
+
 
   addCart = async (products) => {
     try {
@@ -52,8 +53,46 @@ export default class cartManager {
       throw error;
     }
   }
+  updateProductQuantity = async (cartId, productId, quantity) => {
+    try {
+      const cart = await cartModel.findById(cartId);
+
+      if (!cart) throw new Error(`No se encontró el carrito con ID ${cartId}`);
+
+
+      const productToUpdate = cart.products.find((product) =>
+        product._id.toString() === productId
+      );
+
+      if (!productToUpdate) throw new Error(`No se encontró el producto con ID ${productId} en el carrito`);
+
+
+      productToUpdate.quantity = quantity;
+      await cart.save();
+
+      return cart;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   deleteCart = async (cartId) => {
+    try {
+      const existingCart = await cartModel.findById(cartId);
+      if (!existingCart) throw new Error(`No se encontró el carrito con ID ${cartId}`);
+
+
+      existingCart.products = [];
+
+      const updatedCart = await existingCart.save();
+
+      return updatedCart;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  deleteAllProductsInCart = async (cartId) => {
     try {
       const existingCart = await cartModel.findById(cartId);
       if (!existingCart) throw new Error(`No se encontró el carrito con ID ${cartId}`);
@@ -76,7 +115,7 @@ export default class cartManager {
       if (!cart) throw new Error(`No se encontró el carrito con ID ${cartId}`);
 
       cart.products = cart.products.filter((product) =>
-        product.id_product.toString() !== productId
+        product._id.toString() !== productId
       );
 
       await cart.save();

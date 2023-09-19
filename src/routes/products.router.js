@@ -7,16 +7,25 @@ const productsService = new productsManager();
 
 // EndPoint para traer todos los productos
 router.get("/", async (req, res) => {
-  // const { limit } = req.query;
-  const products = await productsService.getProducts();
-  // if (limit) {
-  //   const limitedProducts = products.slice(0, limit);
-  //   res.status(200).json(limitedProducts);
-  // } else if (!limit) {
-  //   res.status(200).json(products);
-  // } else {
-  //   res.status(400).json({ message: "Error al obtener los productos" });
-  // }
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 3;
+  const sort = req.query.sort || 'asc';
+  const category = req.query.category || null; // Capturar el parámetro "category"
+  const status = req.query.status || null;     // Capturar el parámetro "status"
+
+  // Construir un objeto de consulta en función de los parámetros proporcionados
+  const queryObject = {};
+
+  if (category) {
+    queryObject.category = category; // Agregar filtro por categoría si se proporciona
+  }
+
+  if (status) {
+    queryObject.status = status; // Agregar filtro por estado si se proporciona
+  }
+
+  const products = await productsService.getProductsPaginated(limit, page, queryObject, sort);
+
   res.send({ status: "success", payload: products });
 
 });
@@ -70,7 +79,8 @@ router.put("/:pid", async (req, res) => {
     description,
     category,
     stock,
-    price
+    price,
+    status
   } = req.body;
 
   const updateProduct = {
@@ -78,7 +88,8 @@ router.put("/:pid", async (req, res) => {
     description,
     category,
     stock,
-    price
+    price,
+    status
   }
 
   const product = await productsService.getProductBy({ _id: pid });
@@ -91,10 +102,10 @@ router.put("/:pid", async (req, res) => {
 router.delete("/:pid", async (req, res) => {
   const { pid } = req.params;
 
-  const product = await productsService.getProductBy({_id: pid});
+  const product = await productsService.getProductBy({ _id: pid });
   if (!product) return res.status(400).send({ status: "error", error: "Producto no encontrado" });
   await productsService.deleteProduct(pid)
-  res.send({ status: "success", message: "Producto eliminado" });  
+  res.send({ status: "success", message: "Producto eliminado" });
 });
 
 export default router;

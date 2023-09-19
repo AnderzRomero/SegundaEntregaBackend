@@ -5,11 +5,12 @@ const collection = "carts";
 const productSubSchema = new mongoose.Schema({
     _id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'products'
+        ref: 'products',
+        required:true
     },
     quantity: {
-        type: Number, 
-        default: 1,
+        type: Number,
+        default: 1
     }
 }, { _id: false });
 
