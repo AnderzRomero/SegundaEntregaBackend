@@ -7,7 +7,7 @@ export default class cartManager {
 
   getCartById = async (cartId) => {
     try {
-      const cart = await cartModel.findById(cartId)
+      const cart = await cartModel.findById(cartId).lean();
 
       if (!cart) throw new Error(`No se encontró el carrito con ID ${cartId}`);
 

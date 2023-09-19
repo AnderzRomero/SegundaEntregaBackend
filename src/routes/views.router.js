@@ -7,8 +7,8 @@ const productsService = new ProductManager();
 const cartsService = new cartManager();
 
 router.get("/", async (req, res) => {
-  const listaProductos = await productsService.getProducts();
-  res.render("home", { listaProductos });
+  // const listaProductos = await productsService.getProducts();
+  res.render("home");
 });
 
 router.get('/products', async (req, res) => {
@@ -41,9 +41,7 @@ router.get('/carts/:cid', async (req, res) => {
   const filter = { _id: carrito_id }; // Crea un objeto de filtro con el campo "_id" y el valor del ID
   const cart = await cartsService.getCartById(filter);
 
-  res.render('Carts', {
-    cart
-});
+  res.render('Carts',{cart});  
 });
 
 
