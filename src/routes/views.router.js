@@ -39,11 +39,11 @@ router.get('/products', async (req, res) => {
 router.get('/carts/:cid', async (req, res) => {
   const carrito_id = req.params.cid;
   const filter = { _id: carrito_id }; // Crea un objeto de filtro con el campo "_id" y el valor del ID
-  const Carts = await cartsService.getCartById(filter);
+  const cart = await cartsService.getCartById(filter);
 
   res.render('Carts', {
-      Carts:carrito_id,
-  });
+    cart
+});
 });
 
 

@@ -1,9 +1,9 @@
 <h1>carts list</h1>
 
-{{#if carts}}
-    <p> id carrito: {{Carts._id}}</p>
+{{#if cart}}
+    <p> id carrito: {{cart._id}}</p>
     <br>
-    {{#each Carts.products}}
+    {{#each cart.products}}
         <br>
         <p> id producto: {{this.id_product}}</p>
         <p> quantity producto: {{this.quantity}}</p>
